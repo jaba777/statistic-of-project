@@ -11,7 +11,7 @@ import {
   EditableFormInstance
 } from '@ant-design/pro-components';
 
-console.log(ProFormRadio.Group)
+
 
 
 const waitTime = (time: number = 100) => {
@@ -22,13 +22,19 @@ const waitTime = (time: number = 100) => {
   });
 };
 
+type Address={
+  street?:string | any;
+  city?:string | any;
+}
+
 type DataSourceType = {
   id: React.Key;
-  title?: string;
-  readonly?: string;
-  decs?: string;
-  scoringMethod?: string;
-  created_at?: string;
+  name?: string;
+  email?: string;
+  gender?: string;
+  address?:Address;
+  
+  phone?:string;
   update_at?: string;
   children?: DataSourceType[];
 };
@@ -36,21 +42,27 @@ type DataSourceType = {
 const defaultData: DataSourceType[] = [
   {
     id: 624748504,
-    title: 'first',
-    readonly: '活动名称一',
-    decs: '这个活动真好玩',
-    scoringMethod: 'male',
-    created_at: '1590486176000',
-    update_at: '1590486176000',
+    name: 'first',
+    email: 'ajdsdh',
+    address: {
+      street: 'sdf',
+      city: 'New York',
+    },
+    gender: 'male',
+    phone: '1590486176000',
+   
   },
   {
     id: 624691229,
-    title: 'second',
-    readonly: '活动名称二',
-    decs: '这个活动真好玩',
-    scoringMethod: 'male',
-    created_at: '1590481162000',
-    update_at: '1590481162000',
+    name: 'second',
+    email: 'adfasdf',
+    address: {
+      street: 'rgg',
+      city: 'dgdfgh',
+    },
+    gender: 'male',
+    phone: '1590481162000',
+    
   },
 ];
 
@@ -67,40 +79,41 @@ const Home = () => {
   const columns: ProColumns<DataSourceType>[] = [
     {
       title: 'name',
-      dataIndex: 'title',
-      tooltip: '只读，使用form.getFieldValue获取不到值',
+      dataIndex: 'name',
+      
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
+            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
         };
       },
       
       editable: (text, record, index) => {
         return index !== 0;
       },
-      width: '15%',
+      width: '10%',
     },
     {
-      title: '活动名称二',
-      dataIndex: 'desc',
-      tooltip: '只读，使用form.getFieldValue可以获取到值',
+      title: 'email',
+      dataIndex: 'email',
+      
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
+            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
         };
       },
-      width: '15%',
+      
+      width: '10%',
     },
     {
-      title: '计分方式',
-      dataIndex: 'scoringMethod',
+      title: 'gender',
+      dataIndex: 'gender',
       valueType: 'select',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
+            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
         };
       },
       request: async () => [
@@ -116,19 +129,19 @@ const Home = () => {
       fieldProps: (_, { rowIndex }) => {
         return {
           onSelect: () => {
-            // 每次选中重置参数
+           
             editableFormRef.current?.setRowData?.(rowIndex, { fraction: [] });
           },
         };
       },
     },
     {
-      title: '描述',
-      dataIndex: 'decs',
+      title: 'street',
+      dataIndex: 'street',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
+            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
         };
       },
       fieldProps: (form, { rowKey, rowIndex }) => {
@@ -144,19 +157,47 @@ const Home = () => {
         }
         return {};
       },
+      render: (_, row) => <>{row?.address?.street}</>,
     },
     {
-      title: '活动时间',
-      dataIndex: 'created_at',
+      title: 'city',
+      dataIndex: 'city',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
-            rowIndex > 1 ? [{ required: true, message: '此项为必填项' }] : [],
+            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+        };
+        
+      },
+      fieldProps: (form, { rowKey, rowIndex }) => {
+        if (form.getFieldValue([rowKey || '', 'title']) === '不好玩') {
+          return {
+            disabled: true,
+          };
+        }
+        if (rowIndex > 9) {
+          return {
+            disabled: true,
+          };
+        }
+        return {};
+      },
+      render: (_, row) => <>{row?.address?.city}</>,
+    },
+    
+    {
+      title: 'phone',
+      dataIndex: 'phone',
+      
+      formItemProps: (form, { rowIndex }) => {
+        return {
+          rules:
+            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
         };
       },
     },
     {
-      title: '操作',
+      title: 'operation',
       valueType: 'option',
       width: 200,
       render: (text, record, _, action) => [
@@ -189,7 +230,7 @@ const Home = () => {
       <div className="timetable">
       <EditableProTable<DataSourceType>
         rowKey="id"
-        headerTitle="可编辑表格"
+      
         maxLength={5}
         
         editableFormRef={editableFormRef}
@@ -240,14 +281,14 @@ const Home = () => {
           type: 'multiple',
           editableKeys,
           onSave: async (rowKey, data, row) => {
-            console.log(data );
+           
             await waitTime(2000);
           },
           onChange: setEditableRowKeys,
         }}
       />
 
-      
+
     
       </div>
 
