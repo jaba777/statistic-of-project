@@ -1,0 +1,60 @@
+.header{
+    background: #000;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    .header-section{
+        max-width: 1366px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @media only screen and (max-width: 400px){
+            display: block;
+        } 
+        .logo{
+            h1{
+                font-weight: 800;
+                font-size: 36px;
+                text-transform: uppercase;  
+                @media only screen and (max-width: 650px){
+                    font-size: 32px;
+                    font-weight: 400;
+                }     
+            }
+        }
+        .menuIcon{
+            font-size: 32px;
+            cursor: pointer;
+            display: none;
+            @media only screen and (max-width: 400px){
+                display: flex;
+                position: absolute;
+                right: 2rem;
+                top: 15px;
+            } 
+        }
+        .lists{
+            ul{
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                 
+                li{
+                    font-size: 22px;
+                    font-weight: 300;
+                    a{
+                        text-decoration: none;
+                        color: #fff;
+                    }
+                }
+                  
+                  
+            }
+
+            
+            
+        }
+    }
+    
+}
