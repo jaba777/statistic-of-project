@@ -1,6 +1,8 @@
 import React from 'react'
 import './Home.scss';
-import { useState,useRef } from 'react';
+import create,{SetState} from 'zustand';
+import { useState,useRef,useEffect } from 'react';
+import axios from 'axios';
 
 import type { ProColumns } from '@ant-design/pro-components';
 import {
@@ -11,16 +13,6 @@ import {
   EditableFormInstance
 } from '@ant-design/pro-components';
 
-
-
-
-const waitTime = (time: number = 100) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(true);
-    }, time);
-  });
-};
 
 type Address={
   street?:string | any;
@@ -33,48 +25,58 @@ type DataSourceType = {
   email?: string;
   gender?: string;
   address?:Address;
-  
   phone?:string;
   update_at?: string;
   children?: DataSourceType[];
 };
 
-const defaultData: DataSourceType[] = [
-  {
-    id: 624748504,
-    name: 'first',
-    email: 'ajdsdh',
-    address: {
-      street: 'sdf',
-      city: 'New York',
-    },
-    gender: 'male',
-    phone: '1590486176000',
-   
-  },
-  {
-    id: 624691229,
-    name: 'second',
-    email: 'adfasdf',
-    address: {
-      street: 'rgg',
-      city: 'dgdfgh',
-    },
-    gender: 'male',
-    phone: '1590481162000',
+type StoreState = {
+  data: DataSourceType[];
+  fetchData: () => Promise<void>;
+};
+
+interface MyState {
+  myObject: DataSourceType
+  setMyObject: (obj: DataSourceType) => void
+}
+
+
+const useStore = create<StoreState>((set: SetState<StoreState>) => ({
+  data: [],
+  fetchData: async () => {
+    const response = await axios.get('http://localhost:8800/auth-person');
+    set({data: response.data});
     
   },
-];
+}));
+
+const addStoreHandler = create<MyState>((set) => ({
+  myObject: {} as DataSourceType,
+  setMyObject: async (myObject: DataSourceType) => {
+    try {
+      const response = await axios.post<DataSourceType>('http://localhost:8800/add-person',myObject);
+      set({myObject})
+    } catch (error) {
+      
+    }
+},
+}))
+
+
 
 const Home = () => {
-
-
+  const {  data,fetchData } = useStore();
+  const {setMyObject} = addStoreHandler();
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<readonly DataSourceType[]>([]);
   const [position, setPosition] = useState<'top' | 'bottom' | 'hidden'>(
     'bottom',
   );
   const editableFormRef = useRef<EditableFormInstance>();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const columns: ProColumns<DataSourceType>[] = [
     {
@@ -137,7 +139,7 @@ const Home = () => {
     },
     {
       title: 'street',
-      dataIndex: 'street',
+      dataIndex: 'address',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
@@ -157,17 +159,17 @@ const Home = () => {
         }
         return {};
       },
+      
       render: (_, row) => <>{row?.address?.street}</>,
     },
     {
       title: 'city',
-      dataIndex: 'city',
+      dataIndex: 'address',
       formItemProps: (form, { rowIndex }) => {
         return {
           rules:
             rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
         };
-        
       },
       fieldProps: (form, { rowKey, rowIndex }) => {
         if (form.getFieldValue([rowKey || '', 'title']) === '不好玩') {
@@ -182,6 +184,7 @@ const Home = () => {
         }
         return {};
       },
+     
       render: (_, row) => <>{row?.address?.city}</>,
     },
     
@@ -235,13 +238,14 @@ const Home = () => {
         
         editableFormRef={editableFormRef}
         scroll={{
-          x: 960,
+          x: 960
         }}
         recordCreatorProps={
           position !== 'hidden'
             ? {
-                position: position as 'top',
+                position: 'bottom',
                 record: () => ({ id: (Math.random() * 1000000).toFixed(0) }),
+                creatorButtonText: 'Add'
               }
             : false
         }
@@ -271,20 +275,33 @@ const Home = () => {
         ]}
         columns={columns}
         request={async () => ({
-          data: defaultData,
-          total: 3,
+          data: data,
+          total: 8,
           success: true,
         })}
-        value={dataSource}
+        value={data}
         onChange={setDataSource}
         editable={{
           type: 'multiple',
           editableKeys,
           onSave: async (rowKey, data, row) => {
+
+            /*setMyObject({
+              id: data.id,
+              name:data.name,
+              gender: data.gender,
+              address: {
+                street: data.address?.street,
+                city: data.address?.city
+              },
+              phone: data.phone
+            })*/
            
-            await waitTime(2000);
+            console.log(data)
+           
           },
           onChange: setEditableRowKeys,
+          
         }}
       />
 
