@@ -19,16 +19,18 @@ type Address={
   city?:string | any;
 }
 
-type DataSourceType = {
-  id: React.Key;
-  name?: string;
-  email?: string;
-  gender?: string;
-  address?:Address;
-  phone?:string;
-  update_at?: string;
-  children?: DataSourceType[];
-};
+
+  type DataSourceType = {
+    id: React.Key;
+    name?: string;
+    email?: string;
+    gender?: string;
+    address?: Address;
+    phone?: string;
+    update_at?: string;
+    children?: DataSourceType[];
+  };
+
 
 type StoreState = {
   data: DataSourceType[];
@@ -44,29 +46,36 @@ interface MyState {
 const useStore = create<StoreState>((set: SetState<StoreState>) => ({
   data: [],
   fetchData: async () => {
-    const response = await axios.get('http://localhost:8800/auth-person');
-    set({data: response.data});
+    try {
+
+      const response = await axios.get('http://localhost:8800/auth-person');
+      set({data: response.data});
+      
+    } catch (error) {
+      
+    }
+    
     
   },
 }));
 
-const addStoreHandler = create<MyState>((set) => ({
+/*const addStoreHandler = create<MyState>((set) => ({
   myObject: {} as DataSourceType,
   setMyObject: async (myObject: DataSourceType) => {
     try {
-      const response = await axios.post<DataSourceType>('http://localhost:8800/add-person',myObject);
-      set({myObject})
+       await axios.post<DataSourceType>('http://localhost:8800/add-person',myObject);
+      
     } catch (error) {
       
     }
 },
-}))
+}))*/
 
 
 
 const Home = () => {
   const {  data,fetchData } = useStore();
-  const {setMyObject} = addStoreHandler();
+  //const {setMyObject} = addStoreHandler();
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<readonly DataSourceType[]>([]);
   const [position, setPosition] = useState<'top' | 'bottom' | 'hidden'>(
@@ -74,24 +83,47 @@ const Home = () => {
   );
   const editableFormRef = useRef<EditableFormInstance>();
 
+  const addRowhandler=async(object:DataSourceType)=>{
+
+    try {
+      await axios.post('http://localhost:8800/add-person',object)
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  const DeleteRowhandler=async(id: any)=>{
+    try {
+
+      await axios.delete(`http://localhost:8800/delete-person/${id}`)
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+
+
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
+
+  useEffect(()=>{
+    setDataSource(data)
+  },[data])
 
   const columns: ProColumns<DataSourceType>[] = [
     {
       title: 'name',
       dataIndex: 'name',
       
-      formItemProps: (form, { rowIndex }) => {
+      formItemProps: () => {
         return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+          rules: [{ required: true, message: '此项为必填项' }],
         };
-      },
-      
-      editable: (text, record, index) => {
-        return index !== 0;
       },
       width: '10%',
     },
@@ -99,10 +131,9 @@ const Home = () => {
       title: 'email',
       dataIndex: 'email',
       
-      formItemProps: (form, { rowIndex }) => {
+      formItemProps: () => {
         return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+          rules: [{ required: true, message: '此项为必填项' }],
         };
       },
       
@@ -112,10 +143,9 @@ const Home = () => {
       title: 'gender',
       dataIndex: 'gender',
       valueType: 'select',
-      formItemProps: (form, { rowIndex }) => {
+      formItemProps: () => {
         return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+          rules: [{ required: true, message: '此项为必填项' }],
         };
       },
       request: async () => [
@@ -139,11 +169,10 @@ const Home = () => {
     },
     {
       title: 'street',
-      dataIndex: 'address',
-      formItemProps: (form, { rowIndex }) => {
+      dataIndex: ['address','street'],
+      formItemProps: () => {
         return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+          rules: [{ required: true, message: '此项为必填项' }],
         };
       },
       fieldProps: (form, { rowKey, rowIndex }) => {
@@ -164,11 +193,10 @@ const Home = () => {
     },
     {
       title: 'city',
-      dataIndex: 'address',
-      formItemProps: (form, { rowIndex }) => {
+      dataIndex: ['address','city'],
+      formItemProps: () => {
         return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+          rules: [{ required: true, message: '此项为必填项' }],
         };
       },
       fieldProps: (form, { rowKey, rowIndex }) => {
@@ -185,17 +213,16 @@ const Home = () => {
         return {};
       },
      
-      render: (_, row) => <>{row?.address?.city}</>,
+     render: (_, row) => <>{row?.address?.city}</>,
     },
     
     {
       title: 'phone',
       dataIndex: 'phone',
       
-      formItemProps: (form, { rowIndex }) => {
+      formItemProps: () => {
         return {
-          rules:
-            rowIndex > 1 ? [{ required: true, message: 'fill input' }] : [],
+          rules: [{ required: true, message: '此项为必填项' }],
         };
       },
     },
@@ -208,15 +235,21 @@ const Home = () => {
           key="editable"
           onClick={() => {
             action?.startEditable?.(record.id);
+            console.log(text)
           }}
+          className='update-btn'
         >
           update
         </button>,
         <button
           key="delete"
           onClick={() => {
+            console.log(record)
+            DeleteRowhandler(record.id)
             setDataSource(dataSource.filter((item) => item.id !== record.id));
+
           }}
+          className='delete-btn'
         >
           delete
         </button>,
@@ -234,7 +267,7 @@ const Home = () => {
       <EditableProTable<DataSourceType>
         rowKey="id"
       
-        maxLength={5}
+        maxLength={1000}
         
         editableFormRef={editableFormRef}
         scroll={{
@@ -279,25 +312,29 @@ const Home = () => {
           total: 8,
           success: true,
         })}
-        value={data}
+        value={dataSource}
         onChange={setDataSource}
         editable={{
           type: 'multiple',
           editableKeys,
           onSave: async (rowKey, data, row) => {
 
-            /*setMyObject({
-              id: data.id,
-              name:data.name,
-              gender: data.gender,
-              address: {
-                street: data.address?.street,
-                city: data.address?.city
-              },
-              phone: data.phone
-            })*/
-           
             console.log(data)
+
+              addRowhandler({
+                id: data.id,
+                name:data.name,
+                email: data.email,
+                gender: data.gender,
+                address: {
+                  street: data.address?.street,
+                  city: data.address?.city
+                },
+                phone: data.phone
+              })
+
+           
+            
            
           },
           onChange: setEditableRowKeys,
