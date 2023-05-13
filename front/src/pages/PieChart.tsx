@@ -66,7 +66,6 @@ const PieChart = () => {
        
         const data = Object.entries(counts).map(([type, value]) => ({ type, value }));
 
-        console.log(data)
         setData(data)
         
     },[arr])
@@ -97,7 +96,7 @@ const PieChart = () => {
 
 
   return (
-    <div>
+    <div style={{width: '50%',margin: '5rem auto'}}>
      <Pie {...config} />
     </div>
   )

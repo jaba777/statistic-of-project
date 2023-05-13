@@ -20,7 +20,7 @@ const Header = () => {
               style={({ isActive }) => ({ color: isActive ? 'greenyellow' : 'white' })}>Home</NavLink></li>
              
               <li><NavLink to='/pie-chart' 
-              style={({ isActive }) => ({ color: isActive ? 'greenyellow' : 'white' })}>Active</NavLink></li>
+              style={({ isActive }) => ({ color: isActive ? 'greenyellow' : 'white' })}>Pie chart</NavLink></li>
               
             </ul>
           </div>

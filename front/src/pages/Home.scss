@@ -1,24 +1,34 @@
+.home{
 
-.ant-table-cell{
-
-    .update-btn{
-        border: none;
-        color: #fff;
-        background: rgb(41, 41, 158);
-        padding: 0.2rem 0.5rem;
-        border-radius: 5px;
-        cursor: pointer;
+    .personal-title{
+        text-align: center;
+        color: #494c66;
+        margin-top: 2rem;
     }
 
-    .delete-btn{
-        border: none;
-        color: #fff;
-        background: rgb(172, 57, 57);
-        padding: 0.2rem 0.5rem;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+    .ant-table-cell{
+
+        .update-btn{
+            border: none;
+            color: #fff;
+            background: rgb(41, 41, 158);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     
+        .delete-btn{
+            border: none;
+            color: #fff;
+            background: rgb(172, 57, 57);
+            padding: 0.2rem 0.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+    
+    }
 
 }
+
   

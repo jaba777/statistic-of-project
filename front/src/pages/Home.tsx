@@ -37,10 +37,7 @@ type StoreState = {
   fetchData: () => Promise<void>;
 };
 
-interface MyState {
-  myObject: DataSourceType
-  setMyObject: (obj: DataSourceType) => void
-}
+
 
 
 const useStore = create<StoreState>((set: SetState<StoreState>) => ({
@@ -59,23 +56,12 @@ const useStore = create<StoreState>((set: SetState<StoreState>) => ({
   },
 }));
 
-/*const addStoreHandler = create<MyState>((set) => ({
-  myObject: {} as DataSourceType,
-  setMyObject: async (myObject: DataSourceType) => {
-    try {
-       await axios.post<DataSourceType>('http://localhost:8800/add-person',myObject);
-      
-    } catch (error) {
-      
-    }
-},
-}))*/
 
 
 
 const Home = () => {
   const {  data,fetchData } = useStore();
-  //const {setMyObject} = addStoreHandler();
+
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
   const [dataSource, setDataSource] = useState<readonly DataSourceType[]>([]);
   const [position, setPosition] = useState<'top' | 'bottom' | 'hidden'>(
@@ -122,7 +108,7 @@ const Home = () => {
       
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true, message: 'fill input' }],
         };
       },
       width: '10%',
@@ -133,7 +119,7 @@ const Home = () => {
       
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true, message: 'fill input' }],
         };
       },
       
@@ -145,7 +131,7 @@ const Home = () => {
       valueType: 'select',
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true, message: 'fill input' }],
         };
       },
       request: async () => [
@@ -172,7 +158,7 @@ const Home = () => {
       dataIndex: ['address','street'],
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true, message: 'fill input' }],
         };
       },
       fieldProps: (form, { rowKey, rowIndex }) => {
@@ -196,7 +182,7 @@ const Home = () => {
       dataIndex: ['address','city'],
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true, message: 'fill input' }],
         };
       },
       fieldProps: (form, { rowKey, rowIndex }) => {
@@ -222,7 +208,7 @@ const Home = () => {
       
       formItemProps: () => {
         return {
-          rules: [{ required: true, message: '此项为必填项' }],
+          rules: [{ required: true, message: 'fill input' }],
         };
       },
     },
@@ -231,13 +217,13 @@ const Home = () => {
       valueType: 'option',
       width: 200,
       render: (text, record, _, action) => [
-
+       
 
         <button
           key="editable"
           onClick={() => {
             action?.startEditable?.(record.id);
-            console.log(text)
+            console.log(action)
           }}
           className='update-btn'
         >
@@ -265,8 +251,8 @@ const Home = () => {
 
 
   return (
-    <div>
-      <h1>Home</h1>
+    <div className='home'>
+      <h1 className='personal-title'>Personal Data</h1>
 
       <div className="timetable">
       <EditableProTable<DataSourceType>

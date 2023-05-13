@@ -21,18 +21,19 @@ export const addPersonHandler=async(req,res) =>{
     try {
 
         const {id,name,gender,email,address,phone} = req.body;
-        if(!id || !name || !gender || !email || !address || !phone){
-            res.status(502).send({
-                message: 'error'
-            })
-        }  else{
 
+        const index = people.findIndex((person) => person.id === id);
+        
+        
+        if (index !== -1){
+            people.splice(index,1,req.body)
+            fs.writeFileSync('./db/personaldata.json',JSON.stringify(people));
+            res.status(200).send(people);
+        } else{
             people.push(req.body);
             fs.writeFileSync('./db/personaldata.json',JSON.stringify(people));
             res.status(200).send(people);
-
         }
-
       
     } catch (error) {
         console.log(error)
@@ -68,15 +69,3 @@ export const deletePersonHandler=async(req,res) =>{
 
 }
 
-export const countPeople=async(req,res)=>{
-    const data=[]
-    people.forEach((item,index)=>{
-        if(index == 1){
-            data.push({type: item.address.city,value:1})
-        }
-        
-       
-    })
-
-    res.status(200).send(data)
-}
