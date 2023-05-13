@@ -67,3 +67,16 @@ export const deletePersonHandler=async(req,res) =>{
     }
 
 }
+
+export const countPeople=async(req,res)=>{
+    const data=[]
+    people.forEach((item,index)=>{
+        if(index == 1){
+            data.push({type: item.address.city,value:1})
+        }
+        
+       
+    })
+
+    res.status(200).send(data)
+}

@@ -52,7 +52,7 @@ const useStore = create<StoreState>((set: SetState<StoreState>) => ({
       set({data: response.data});
       
     } catch (error) {
-      
+      console.log(error)
     }
     
     
@@ -231,6 +231,8 @@ const Home = () => {
       valueType: 'option',
       width: 200,
       render: (text, record, _, action) => [
+
+
         <button
           key="editable"
           onClick={() => {
@@ -241,6 +243,9 @@ const Home = () => {
         >
           update
         </button>,
+
+
+
         <button
           key="delete"
           onClick={() => {

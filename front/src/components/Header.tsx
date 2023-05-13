@@ -19,7 +19,7 @@ const Header = () => {
               <li><NavLink to='/' 
               style={({ isActive }) => ({ color: isActive ? 'greenyellow' : 'white' })}>Home</NavLink></li>
              
-              <li><NavLink to='/active' 
+              <li><NavLink to='/pie-chart' 
               style={({ isActive }) => ({ color: isActive ? 'greenyellow' : 'white' })}>Active</NavLink></li>
               
             </ul>
