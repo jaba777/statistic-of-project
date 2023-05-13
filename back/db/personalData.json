@@ -1,1 +1,79 @@
-[{"id":10,"name":"Vilma Jefferson","email":"vilmajefferson@gology.com","gender":"female","address":{"street":"Bath Avenue","city":"New York"},"phone":"+1 (814) 496-3905"},{"id":11,"name":"Cassandra Nguyen","email":"cassandranguyen@gology.com","gender":"female","address":{"street":"Hamilton Avenue","city":"Chicago"},"phone":"+1 (946) 426-2243"},{"id":12,"name":"Lenora Clements","email":"lenoraclements@gology.com","gender":"female","address":{"street":"Seba Avenue","city":"San Diego"},"phone":"+1 (838) 598-2355"},{"id":13,"name":"Hanson Goodwin","email":"hansongoodwin@gology.com","gender":"male","address":{"street":"Cranberry Street","city":"New York"},"phone":"+1 (947) 576-2508"},{"id":"782976","name":"Jaba","email":"Jaba@gmail.com","gender":"male","address":{"street":"Avlabari","city":"New York"},"phone":"+995 555 306805"}]
+[
+    {
+		"id": 10,
+		"name": "Vilma Jefferson",
+		"email": "vilmajefferson@gology.com",
+		"gender": "female",
+		"address": {
+			"street": "Bath Avenue",
+			"city": "New York"
+		},
+		"phone": "+1 (814) 496-3905"
+	},
+	{
+		"id": 11,
+		"name": "Cassandra Nguyen",
+		"email": "cassandranguyen@gology.com",
+		"gender": "female",
+		"address": {
+			"street": "Hamilton Avenue",
+			"city": "Chicago"
+		},
+		"phone": "+1 (946) 426-2243"
+	},
+	{
+		"id": 12,
+		"name": "Lenora Clements",
+		"email": "lenoraclements@gology.com",
+		"gender": "female",
+		"address": {
+			"street": "Seba Avenue",
+			"city": "San Diego"
+		},
+		"phone": "+1 (838) 598-2355"
+	},
+	{
+		"id": 13,
+		"name": "Hanson Goodwin",
+		"email": "hansongoodwin@gology.com",
+		"gender": "male",
+		"address": {
+			"street": "Cranberry Street",
+			"city": "New York"
+		},
+		"phone": "+1 (947) 576-2508"
+	},
+	{
+		"id": 14,
+		"name": "Lauren Fox",
+		"email": "laurenfox@gology.com",
+		"gender": "female",
+		"address": {
+			"street": "Prospect Place",
+			"city": "Los Angeles"
+		},
+		"phone": "+1 (898) 468-2841"
+	},
+	{
+		"id": 15,
+		"name": "Augusta Vazquez",
+		"email": "augustavazquez@gology.com",
+		"gender": "female",
+		"address": {
+			"street": "Radde Place",
+			"city": "Los Angeles"
+		},
+		"phone": "+1 (918) 520-3519"
+	},
+	{
+		"id": 16,
+		"name": "Craig Knight",
+		"email": "craigknight@gology.com",
+		"gender": "male",
+		"address": {
+			"street": "Franklin Avenue",
+			"city": "San Diego"
+		},
+		"phone": "+1 (965) 495-3738"
+	}
+]
