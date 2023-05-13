@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-let people = JSON.parse( fs.readFileSync('./db/personaldata.json').toString())
+let people = JSON.parse( fs.readFileSync('../db/personaldata.json').toString())
 
 export const FullPersonalController=async(req,res)=>{
     try {
